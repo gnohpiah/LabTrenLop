@@ -70,4 +70,16 @@ public class MyDB  extends SQLiteOpenHelper {
         }
         return list;
     }
+
+    public void updateContact(int id,User contact){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues value = new ContentValues();
+        value.put(Id,contact.getId());
+        value.put(Name,contact.getName());
+        value.put(Phone,contact.getPhone());
+        value.put(Image,contact.getImg());
+        db.update(TableName,value,Id + "=?",new String[]{String.valueOf(id)});
+        db.close();
+    }
+
 }

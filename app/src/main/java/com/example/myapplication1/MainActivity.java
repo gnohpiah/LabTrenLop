@@ -43,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
         flbtn = findViewById(R.id.flbtAdd);
         listUser = new ArrayList<>();
         db = new MyDB(this,"ContactDB2",null,1);
-        db.addContact(new User(1,"Nguyen Van An","456446","img1"));
+        /*db.addContact(new User(1,"Nguyen Van An","456446","img1"));
         db.addContact(new User(2,"Nguyen Van B","4789512","img2"));
         db.addContact(new User(3,"Nguyen Van C","12023","img3"));
         db.addContact(new User(4,"Nguyen Van D","798451","img4"));
-        db.addContact(new User(5,"Nguyen Van E","324234","img5"));
+        db.addContact(new User(5,"Nguyen Van E","324234","img5"));*/
         listUser = db.getAllContact();
        /* listUser.add(new User(1,"Nam","132132",""));
         listUser.add(new User(2,"Abc","1456465",""));
@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
             listUserAdapter.notifyDataSetChanged();
         } else if (requestCode == 200 && resultCode == 150){
             listUser.set(SelectedItemId,newuser);
+            db.updateContact(SelectedItemId,newuser);
             Toast.makeText(this, newuser.getName(), Toast.LENGTH_SHORT).show();
             lvcontact.setAdapter(listUserAdapter);
             listUserAdapter.notifyDataSetChanged();
