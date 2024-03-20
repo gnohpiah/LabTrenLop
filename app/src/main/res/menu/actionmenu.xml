@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/mnuSortByName"
+        android:title="Sort by Name" />
+    <item
+        android:id="@+id/mnuSortByPhone"
+        android:title="Sort by Phone" />
+    <item
+        android:id="@+id/mnuBroadcast"
+        android:title="Broadcast" />
+</menu>
