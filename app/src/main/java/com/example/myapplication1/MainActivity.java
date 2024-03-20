@@ -5,7 +5,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.Manifest;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -25,8 +28,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private int PERMISSION_REQUEST_READ_CONTACTS = 1;
     private int SelectedItemId;
     private ListView lvcontact;
+    ContentProvider cp;
     private EditText etsearch;
     FloatingActionButton flbtn;
     ArrayList<User> listUser;
@@ -52,8 +57,9 @@ public class MainActivity extends AppCompatActivity {
        /* listUser.add(new User(1,"Nam","132132",""));
         listUser.add(new User(2,"Abc","1456465",""));
         listUser.add(new User(3,"Hung","45646",""));*/
-        listUserAdapter = new Adapter(this,listUser);
-        lvcontact.setAdapter(listUserAdapter);
+        //listUserAdapter = new Adapter(this,listUser);
+        //lvcontact.setAdapter(listUserAdapter);
+        ShowContact();
 
         flbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             listUserAdapter.notifyDataSetChanged();
         } else if (requestCode == 200 && resultCode == 150){
             listUser.set(SelectedItemId,newuser);
-            db.updateContact(SelectedItemId,newuser);
+            db.updateContact(newuser.getId(),newuser);
             Toast.makeText(this, newuser.getName(), Toast.LENGTH_SHORT).show();
             lvcontact.setAdapter(listUserAdapter);
             listUserAdapter.notifyDataSetChanged();
@@ -169,6 +175,17 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onContextItemSelected(item);
     }
-
+    private void ShowContact(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+        checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},PERMISSION_REQUEST_READ_CONTACTS);
+        }
+        else {
+            cp = new ContentProvider(this);
+            listUser = cp.getAllContact();
+            listUserAdapter = new Adapter(this,listUser);
+            lvcontact.setAdapter(listUserAdapter);
+        }
+    }
 
 }
